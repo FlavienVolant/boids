@@ -2,23 +2,21 @@ import pygame
 import random
 
 from fish import Fish
+from simulation import Simulation
 
 pygame.init()
 
-SCREEN_WIDTH = 1280
-SCREEN_HEIGHT = 720
-
-MAX_SPEED = 100
+SCREEN_WIDTH = 620
+SCREEN_HEIGHT = 620
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 clock = pygame.time.Clock()
 running = True
 
-fishs = [
-    Fish((random.random() * SCREEN_WIDTH, random.random() * SCREEN_HEIGHT), (random.uniform(-MAX_SPEED, MAX_SPEED), random.uniform(-MAX_SPEED, MAX_SPEED)))
-    for _ in range(1_000)
-]
-
+simulation = Simulation([
+    Fish(position=(random.random() * SCREEN_WIDTH, random.random() * SCREEN_HEIGHT))
+    for _ in range(120)
+])
 
 while running:
 
@@ -30,13 +28,9 @@ while running:
 
     screen.fill("lightblue")
 
-    for fish in fishs:
-        pygame.draw.circle(screen, "yellow", fish.position, 10)
-        fish.update(dt)
+    simulation.update(dt, SCREEN_WIDTH, SCREEN_HEIGHT)
+    simulation.draw(screen)
 
     pygame.display.flip()
-
-
-
 
 pygame.quit()
